@@ -81,17 +81,59 @@ button{
 </div>
 
 <script>
-let yesBtn=document.getElementById("yesBtn");
-let noBtn=document.getElementById("noBtn");
-let card=document.getElementById("card");
-let line=document.getElementById("line");
+document.addEventListener("DOMContentLoaded", () => {
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn  = document.getElementById("noBtn");
+  const card   = document.getElementById("card");
+  const line   = document.getElementById("line");
 
-let size=1;
-let noClicks=0;
+  let size = 1;
+  let noClicks = 0;
 
-let messages=[
-"Are you sure? 🥺",
-"Really really sure? 😭",
-"I made this just for you… 💗",
-"You’re kind of my favorite person…",
-"Okay now you're just being
+  const messages = [
+    "Are you sure? 🥺",
+    "Really really sure? 😭",
+    "I made this just for you… 💗",
+    "You’re kind of my favorite person…",
+    "Okay now you're just being mean 😤",
+    "I’m not giving up on us 💘"
+  ];
+
+  if (!yesBtn || !noBtn || !card || !line) {
+    console.log("Missing element:", { yesBtn, noBtn, card, line });
+    return;
+  }
+
+  noBtn.addEventListener("click", () => {
+    noClicks++;
+    size += 0.2;
+    yesBtn.style.transform = `scale(${size})`;
+
+    line.textContent = messages[Math.min(noClicks - 1, messages.length - 1)];
+
+    noBtn.style.position = "fixed";
+    noBtn.style.left = Math.random() * 80 + "vw";
+    noBtn.style.top  = Math.random() * 80 + "vh";
+
+    createHeart();
+  });
+
+  yesBtn.addEventListener("click", () => {
+    card.innerHTML =
+      "<h1>YAY!!! 💘</h1>" +
+      "<p>You just made me the happiest person alive.</p>" +
+      "<p>I’m so lucky to have you ❤️</p>";
+    for (let i = 0; i < 25; i++) setTimeout(createHeart, i * 100);
+  });
+
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.textContent = Math.random() > 0.5 ? "💗" : "💕";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (Math.random() * 10 + 18) + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+  }
+});
+</script>
